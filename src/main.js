@@ -1,5 +1,6 @@
-
 // eslint-disable-next-line strict
+const EVENT_QUANTITY = 3;
+
 const createSiteMenuTemplate = () => {
   return (
     `       <nav class="trip-controls__trip-tabs  trip-tabs">
@@ -387,15 +388,16 @@ const createSiteDayTemplate = () => {
 };
 
 const headerElement = document.querySelector(`.page-header`);
-const menuElement = headerElement.querySelectorAll(`h2`);
+const menuElement = headerElement.querySelector(`.trip-main__menu-title`);
+const filterElement = headerElement.querySelector(`.trip-main__filter-title`);
 const infoElement = headerElement.querySelector(`.trip-main__trip-info`);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-render(menuElement[0], createSiteMenuTemplate(), `afterend`);
-render(menuElement[1], createSiteFilterTemplate(), `afterend`);
+render(menuElement, createSiteMenuTemplate(), `afterend`);
+render(filterElement, createSiteFilterTemplate(), `afterend`);
 render(infoElement, createSiteInfoTemplate(), `afterbegin`);
 
 const mainElement = document.querySelector(`.page-main`);
@@ -406,7 +408,7 @@ render(eventsElement, createSiteDayListTemplate(), `beforeend`);
 
 const eventsDayListElement = mainElement.querySelector(`.trip-days`);
 
-new Array(3)
+new Array(EVENT_QUANTITY)
   .fill(createSiteDayTemplate())
   .forEach(
       (element) => render(eventsDayListElement, element, `beforeend`)
