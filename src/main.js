@@ -5,6 +5,7 @@ import {createSiteNewEventTemplate} from "./components/new-event";
 import {createSiteDayListTemplate} from "./components/day-list";
 import {createSiteDayTemplate} from "./components/day";
 
+
 const EVENT_QUANTITY = 3;
 
 
@@ -35,4 +36,4 @@ new Array(EVENT_QUANTITY)
       (element) => render(eventsDayListElement, element, `beforeend`)
   );
 
-
+// console.log(createEvent())
