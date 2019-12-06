@@ -50,7 +50,7 @@ const generateOffers = () => {
   return cardOffers;
 };
 
-export const createEvent = () => {
+const createEvent = () => {
 
   const now = new Date();
   const randomHours = getRandomNumber(1, 13);
@@ -62,7 +62,6 @@ export const createEvent = () => {
   return {
     type,
     icon: `img/icons/${EventIcon.get(type)}`,
-    photo: `http://picsum.photos/300/150?r=${Math.random()}`,
     city: getRandomElement([...eventCities]),
     description: new Array(quantity).fill(``).map(() => getRandomElement(sentences)).join(),
     date: new Date(),
@@ -73,3 +72,11 @@ export const createEvent = () => {
     offers: generateOffers(),
   };
 };
+
+const createEvents = (amount) => {
+  return new Array(amount)
+    .fill(``)
+    .map(createEvent);
+};
+
+export {createEvent, createEvents};
