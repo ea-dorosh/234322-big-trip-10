@@ -1,12 +1,15 @@
-import {createSiteMenuTemplate} from "./components/menu.js";
-import {createSiteFilterTemplate} from "./components/filter.js";
 import {createSiteInfoTemplate} from "./components/info";
 import {createSiteNewEventTemplate} from "./components/new-event";
 import {createSiteDayListTemplate} from "./components/day-list";
 import {createSiteDayTemplate} from "./components/event";
+import Filters from "./components/filter";
+import Menu from "./components/menu";
 
-import {createEvent} from "./Mock/event";
-import {createEvents} from "./Mock/event";
+import {createEvent, createEvents} from "./Mock/event";
+import {generateFilters} from "./Mock/filter";
+import {generateMenu} from './mock/menu';
+
+import {FILTERS} from "./const";
 
 
 const EVENT_QUANTITY = 3;
@@ -21,9 +24,12 @@ const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-render(menuElement, createSiteMenuTemplate(), `afterend`);
-render(filterElement, createSiteFilterTemplate(), `afterend`);
-render(infoElement, createSiteInfoTemplate(), `afterbegin`);
+const filters = generateFilters(FILTERS);
+render(filterElement, new Filters(filters).getElement().innerHTML, `afterend`);
+
+const menu = generateMenu();
+render(menuElement, new Menu(menu).getElement().innerHTML, `afterend`);
+
 
 const mainElement = document.querySelector(`.page-main`);
 const eventsElement = mainElement.querySelector(`.trip-events`);
@@ -38,4 +44,6 @@ const events = createEvents(EVENT_QUANTITY);
 events.forEach(
     (event) => render(eventsDayListElement, createSiteDayTemplate(event), `beforeend`)
 );
+
+render(infoElement, createSiteInfoTemplate(events), `afterbegin`);
 

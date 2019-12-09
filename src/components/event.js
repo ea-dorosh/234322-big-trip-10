@@ -1,4 +1,5 @@
-import {castDate, formatDateToICO} from "../util";
+import {castDate, formatDateToICO, formatDateAttribute} from "../util";
+import {Month} from "../const";
 
 const generateOffersMarkup = (offers) => {
   return offers.map((offer) => {
@@ -13,15 +14,10 @@ const generateOffersMarkup = (offers) => {
   });
 };
 
-export const createSiteDayTemplate = ({icon, city, type, duration, startTime, endTime, price, offers}) => {
+const eventTemplate = (icon, city, type, duration, startTime, endTime, price, offers) => {
   const offersMarkup = generateOffersMarkup(offers);
   return (
-    `<li class="trip-days__item  day">
-              <div class="day__info">
-                <span class="day__counter">1</span>
-                <time class="day__date" datetime="2019-03-18">MAR 18</time>
-              </div>
-              <ul class="trip-events__list">
+    `
                 <li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
@@ -52,7 +48,25 @@ export const createSiteDayTemplate = ({icon, city, type, duration, startTime, en
                     </button>
                   </div>
                 </li>
+    `
+  );
+};
+
+export const createSiteDayTemplate = ({icon, city, type, duration, startTime, endTime, price, offers, date}) => {
+  const dayQuantity = (date) => {
+
+  };
+
+  return (
+    `<li class="trip-days__item  day">
+              <div class="day__info">
+                <span class="day__counter">1</span>
+                <time class="day__date" datetime="${formatDateAttribute(date)}">${Month.get(date.getMonth())} ${date.getDate()}</time>
+              </div>
+              <ul class="trip-events__list">
+                ${eventTemplate(icon, city, type, duration, startTime, endTime, price, offers)}
               </ul>
             </li>`
   );
 };
+

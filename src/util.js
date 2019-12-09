@@ -16,7 +16,27 @@ export const castDate = (date) => {
   return `${hours}:${minutes}`;
 };
 
+// export const formatEditDate = (date) => {
+//   return formatDateToICO(date).split(`T`).join(` `);
+// };
+
 export const formatEditDate = (date) => {
-  return formatDateToICO(date).split(`T`).join(` `);
+  return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+};
+
+export const formatDateAttribute = (date) => {
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+};
+
+export const formatToTitleCase = (word) => {
+  const firstLetter = word[0].toUpperCase();
+  return `${firstLetter}${word.slice(1)}`;
+};
+
+export const createElement = (template) => {
+  const container = document.createElement(`div`);
+  container.innerHTML = template;
+
+  return container;
 };
 
