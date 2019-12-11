@@ -2,6 +2,7 @@ import {createSiteInfoTemplate} from "./components/info";
 import {createSiteNewEventTemplate} from "./components/new-event";
 import {createSiteDayListTemplate} from "./components/day-list";
 import {createSiteDayTemplate} from "./components/event";
+import {createSiteTotalTemplate} from "./components/total";
 import Filters from "./components/filter";
 import Menu from "./components/menu";
 
@@ -42,3 +43,4 @@ const events = createEvents(EVENT_QUANTITY);
 render(eventsDayListElement, createSiteDayTemplate(events), `beforeend`);
 
 render(infoElement, createSiteInfoTemplate(events), `afterbegin`);
+render(infoElement, createSiteTotalTemplate(events), `beforeend`);
