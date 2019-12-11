@@ -52,21 +52,34 @@ const eventTemplate = (icon, city, type, duration, startTime, endTime, price, of
   );
 };
 
-export const createSiteDayTemplate = ({icon, city, type, duration, startTime, endTime, price, offers, date}) => {
-  const dayQuantity = (date) => {
-
-  };
-
-  return (
-    `<li class="trip-days__item  day">
-              <div class="day__info">
-                <span class="day__counter">1</span>
-                <time class="day__date" datetime="${formatDateAttribute(date)}">${Month.get(date.getMonth())} ${date.getDate()}</time>
-              </div>
-              <ul class="trip-events__list">
-                ${eventTemplate(icon, city, type, duration, startTime, endTime, price, offers)}
-              </ul>
-            </li>`
-  );
+const groupObjects = (objects, property) => {
+  return objects.reduce((groups, item) => {
+    const group = (groups[item[property]] || []);
+    group.push(item);
+    groups[item[property]] = group;
+    return groups;
+  }, {});
 };
 
+export const createSiteDayTemplate = (events) => {
+  const groupEvents = groupObjects(events, `dayOfDate`);
+  let dayWithEvents = ``;
+  let indexDay = 1;
+  for (const objects of Object.values(groupEvents)) {
+    let oneEventTemplate = ``;
+    for (const event of objects) {
+      oneEventTemplate += eventTemplate(event.icon, event.city, event.type, event.duration, event.startTime, event.endTime, event.price, event.offers);
+    }
+    let oneDayTemplate = `<li class="trip-days__item  day">
+            <div class="day__info">
+              <span class="day__counter">${indexDay++}</span>
+              <time class="day__date" datetime="${formatDateAttribute(objects[0].date)}">${Month.get(objects[0].date.getMonth())} ${objects[0].date.getDate()}</time>
+            </div>
+            <ul class="trip-events__list">
+              ${oneEventTemplate}
+            </ul>
+          </li>`;
+    dayWithEvents += oneDayTemplate;
+  }
+  return dayWithEvents;
+};

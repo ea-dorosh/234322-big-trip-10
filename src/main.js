@@ -38,12 +38,7 @@ render(eventsElement, createSiteNewEventTemplate(createEvent()), `beforeend`);
 render(eventsElement, createSiteDayListTemplate(), `beforeend`);
 
 const eventsDayListElement = mainElement.querySelector(`.trip-days`);
-
 const events = createEvents(EVENT_QUANTITY);
-
-events.forEach(
-    (event) => render(eventsDayListElement, createSiteDayTemplate(event), `beforeend`)
-);
+render(eventsDayListElement, createSiteDayTemplate(events), `beforeend`);
 
 render(infoElement, createSiteInfoTemplate(events), `afterbegin`);
-
