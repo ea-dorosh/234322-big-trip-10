@@ -1,6 +1,6 @@
-import {formatEditDate} from "../util";
+import {formatEditDate, createElement} from "../util";
 
-export const createSiteNewEventTemplate = ({icon, city, type, description, startTime, endTime, price}) => {
+const createSiteNewEventTemplate = ({icon, city, type, description, startTime, endTime, price}) => {
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
             <header class="event__header">
@@ -179,3 +179,26 @@ export const createSiteNewEventTemplate = ({icon, city, type, description, start
           </form>`
   );
 };
+
+export default class NewEvent {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSiteNewEventTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

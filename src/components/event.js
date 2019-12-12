@@ -1,4 +1,4 @@
-import {castDate, formatDateToICO, formatDateAttribute} from "../util";
+import {castDate, formatDateToICO, formatDateAttribute, createElement} from "../util";
 import {Month} from "../const";
 
 const generateOffersMarkup = (offers) => {
@@ -61,7 +61,7 @@ const groupObjects = (objects, property) => {
   }, {});
 };
 
-export const createSiteDayTemplate = (events) => {
+const createSiteDayTemplate = (events) => {
   const groupEvents = groupObjects(events, `dayOfDate`);
   let dayWithEvents = ``;
   let indexDay = 1;
@@ -83,3 +83,26 @@ export const createSiteDayTemplate = (events) => {
   }
   return dayWithEvents;
 };
+
+export default class DayEvent {
+  constructor(events) {
+    this._events = events;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSiteDayTemplate(this._events);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

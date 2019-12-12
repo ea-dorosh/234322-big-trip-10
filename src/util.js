@@ -16,6 +16,12 @@ export const castDate = (date) => {
   return `${hours}:${minutes}`;
 };
 
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  AFTEREND: `afterend`,
+  BEFOREEND: `beforeend`
+};
+
 // export const formatEditDate = (date) => {
 //   return formatDateToICO(date).split(`T`).join(` `);
 // };
@@ -40,3 +46,16 @@ export const createElement = (template) => {
   return container;
 };
 
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+    case RenderPosition.AFTEREND:
+      container.after(element);
+      break;
+  }
+};

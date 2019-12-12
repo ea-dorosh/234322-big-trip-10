@@ -1,6 +1,7 @@
 import {Month} from "../const";
+import {createElement} from "../util";
 
-export const createSiteInfoTemplate = (event) => {
+const createSiteInfoTemplate = (event) => {
   const firstCity = event[0].city;
   const lastCity = event[event.length - 1].city;
   const startMonth = Month.get(event[0].date.getMonth());
@@ -15,3 +16,26 @@ export const createSiteInfoTemplate = (event) => {
       </div>`
   );
 };
+
+export default class Info {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSiteInfoTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
