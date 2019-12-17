@@ -31,7 +31,7 @@ render(menuElement, new Menu(menu).getElement(), RenderPosition.AFTEREND);
 const mainElement = document.querySelector(`.page-main`);
 const eventsElement = mainElement.querySelector(`.trip-events`);
 
-render(eventsElement, new NewEvent(createEvent()).getElement(), RenderPosition.BEFOREEND);
+// render(eventsElement, new NewEvent(createEvent()).getElement(), RenderPosition.BEFOREEND);
 render(eventsElement, new DayList().getElement(), RenderPosition.BEFOREEND);
 
 const eventsDayListElement = mainElement.querySelector(`.trip-days`);

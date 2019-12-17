@@ -14,7 +14,7 @@ const generateOffersMarkup = (offers) => {
   });
 };
 
-const eventTemplate = (icon, city, type, duration, startTime, endTime, price, offers) => {
+const eventTemplate = ({icon, city, type, duration, startTime, endTime, price, offers}) => {
   const offersMarkup = generateOffersMarkup(offers);
   return (
     `
@@ -68,7 +68,7 @@ const createSiteDayTemplate = (events) => {
   for (const objects of Object.values(groupEvents)) {
     let oneEventTemplate = ``;
     for (const event of objects) {
-      oneEventTemplate += eventTemplate(event.icon, event.city, event.type, event.duration, event.startTime, event.endTime, event.price, event.offers);
+      oneEventTemplate += eventTemplate(event);
     }
     let oneDayTemplate = `<li class="trip-days__item  day">
             <div class="day__info">
