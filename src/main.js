@@ -31,35 +31,33 @@ render(menuElement, new Menu(menu).getElement(), RenderPosition.AFTEREND);
 const mainElement = document.querySelector(`.page-main`);
 const eventsElement = mainElement.querySelector(`.trip-events`);
 
-//render(eventsElement, new NewEvent(createEvent()).getElement(), RenderPosition.BEFOREEND);
+// render(eventsElement, new NewEvent(createEvent()).getElement(), RenderPosition.BEFOREEND);
 
 render(eventsElement, new DayList().getElement(), RenderPosition.BEFOREEND);
 
-const renderEvent = (events) => {
-  const taskComponent = new DayEvent(events);
-  const taskEditComponent = new NewEvent(createEvent());
+const eventsDayListElement = mainElement.querySelector(`.trip-days`);
 
-  const editButton = taskComponent.getElement().querySelector(`.card__btn--edit`);
+const renderEvent = (event) => {
+  const eventComponent = new DayEvent(event);
+  const eventEditComponent = new NewEvent(createEvent());
+
+  const editButton = eventComponent.getElement().querySelector(`.event__rollup-btn`);
   editButton.addEventListener(`click`, () => {
-    taskListElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+    eventsDayListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
   });
 
-  const editForm = taskEditComponent.getElement().querySelector(`form`);
+  const editForm = eventEditComponent.getElement().querySelector(`form`);
   editForm.addEventListener(`submit`, () => {
-    taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+    eventsDayListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
   });
 
-  render(taskListElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
+  render(eventsDayListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-
-
-
-
-
-const eventsDayListElement = mainElement.querySelector(`.trip-days`);
 const events = createEvents(EVENT_QUANTITY);
-render(eventsDayListElement, new DayEvent(events).getElement(), RenderPosition.BEFOREEND);
+// render(eventsDayListElement, new DayEvent(events).getElement(), RenderPosition.BEFOREEND);
 
+// events.forEach((event) => render(eventsDayListElement, new DayEvent(event).getElement(), RenderPosition.BEFOREEND));
+events.forEach((event) => renderEvent(event));
 render(infoElement, new Info(events).getElement(), RenderPosition.AFTERBEGIN);
 render(infoElement, new Total(events).getElement(), RenderPosition.BEFOREEND);
