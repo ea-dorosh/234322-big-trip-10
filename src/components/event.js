@@ -94,6 +94,10 @@ export default class DayEvent {
     return createSiteDayTemplate(this._events);
   }
 
+  getEditTemplate() {
+
+  }
+
   getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());

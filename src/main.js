@@ -31,8 +31,31 @@ render(menuElement, new Menu(menu).getElement(), RenderPosition.AFTEREND);
 const mainElement = document.querySelector(`.page-main`);
 const eventsElement = mainElement.querySelector(`.trip-events`);
 
-// render(eventsElement, new NewEvent(createEvent()).getElement(), RenderPosition.BEFOREEND);
+//render(eventsElement, new NewEvent(createEvent()).getElement(), RenderPosition.BEFOREEND);
+
 render(eventsElement, new DayList().getElement(), RenderPosition.BEFOREEND);
+
+const renderEvent = (events) => {
+  const taskComponent = new DayEvent(events);
+  const taskEditComponent = new NewEvent(createEvent());
+
+  const editButton = taskComponent.getElement().querySelector(`.card__btn--edit`);
+  editButton.addEventListener(`click`, () => {
+    taskListElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+  });
+
+  const editForm = taskEditComponent.getElement().querySelector(`form`);
+  editForm.addEventListener(`submit`, () => {
+    taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+  });
+
+  render(taskListElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
+
+
+
+
 
 const eventsDayListElement = mainElement.querySelector(`.trip-days`);
 const events = createEvents(EVENT_QUANTITY);
