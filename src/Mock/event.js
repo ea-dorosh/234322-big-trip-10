@@ -50,11 +50,11 @@ const generateOffers = () => {
   return cardOffers;
 };
 
-export const createEvent = () => {
+const createEvent = (day) => {
 
   const now = new Date();
   const randomHours = getRandomNumber(1, 13);
-
+  const date = day || now;
   const type = getRandomElement([...EventIcon.keys()]);
   const sentences = eventText.split(`. `);
   const quantity = getRandomNumber(MIN_INDEX, 3);
@@ -62,10 +62,9 @@ export const createEvent = () => {
   return {
     type,
     icon: `img/icons/${EventIcon.get(type)}`,
-    photo: `http://picsum.photos/300/150?r=${Math.random()}`,
     city: getRandomElement([...eventCities]),
     description: new Array(quantity).fill(``).map(() => getRandomElement(sentences)).join(),
-    date: new Date(),
+    date,
     startTime: generateDate(now),
     endTime: generateDate(now, randomHours),
     duration: `${randomHours}H`,
@@ -73,3 +72,16 @@ export const createEvent = () => {
     offers: generateOffers(),
   };
 };
+
+const createEvents = (amount) => {
+  let dayOfEvent = new Array(amount).fill(``).map(() => new Date());
+  dayOfEvent[2].setDate(dayOfEvent[2].getDate() + 3);
+  return new Array(amount)
+    .fill(``)
+    .map((element, index) => {
+      const event = createEvent(dayOfEvent[index]);
+      return Object.assign(event, {dayOfDate: event.date.getDate()});
+    });
+};
+
+export {createEvent, createEvents};
