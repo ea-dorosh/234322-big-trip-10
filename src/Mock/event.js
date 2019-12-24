@@ -75,7 +75,9 @@ const createEvent = (day) => {
 
 const createEvents = (amount) => {
   let dayOfEvent = new Array(amount).fill(``).map(() => new Date());
-  dayOfEvent[2].setDate(dayOfEvent[2].getDate() + 3);
+  if (amount > 2) {
+    dayOfEvent[2].setDate(dayOfEvent[2].getDate() + 3);
+  }
   return new Array(amount)
     .fill(``)
     .map((element, index) => {

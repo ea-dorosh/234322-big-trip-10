@@ -110,7 +110,6 @@
 //     this._element = null;
 //   }
 // }
-
 import {castDate, formatDateToICO, formatDateAttribute, createElement} from "../util";
 import {Month} from "../const";
 

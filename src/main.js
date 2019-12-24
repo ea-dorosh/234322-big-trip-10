@@ -5,6 +5,7 @@ import Total from "./components/total";
 import DayList from "./components/day-list";
 import NewEvent from "./components/new-event";
 import DayEvent from "./components/event";
+import NoPoints from "./components/no-points";
 
 import {createEvent, createEvents} from "./Mock/event";
 import {generateFilters} from "./Mock/filter";
@@ -31,33 +32,56 @@ render(menuElement, new Menu(menu).getElement(), RenderPosition.AFTEREND);
 const mainElement = document.querySelector(`.page-main`);
 const eventsElement = mainElement.querySelector(`.trip-events`);
 
-// render(eventsElement, new NewEvent(createEvent()).getElement(), RenderPosition.BEFOREEND);
-
 render(eventsElement, new DayList().getElement(), RenderPosition.BEFOREEND);
 
 const eventsDayListElement = mainElement.querySelector(`.trip-days`);
 
 const renderEvent = (event) => {
-  const eventComponent = new DayEvent(event);
-  const eventEditComponent = new NewEvent(createEvent());
 
+  const replaceEventToEdit = () => {
+    eventsDayListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+  };
+
+  const replaceEditToEvent = () => {
+    eventsDayListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  };
+
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToEvent();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const eventComponent = new DayEvent(event);
   const editButton = eventComponent.getElement().querySelector(`.event__rollup-btn`);
   editButton.addEventListener(`click`, () => {
-    eventsDayListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+    replaceEventToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
 
+  const eventEditComponent = new NewEvent(createEvent());
   const editForm = eventEditComponent.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, () => {
-    eventsDayListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
-  });
+  editForm.addEventListener(`submit`, replaceEditToEvent);
 
   render(eventsDayListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
 const events = createEvents(EVENT_QUANTITY);
+
+// старая функция которая рендерит сразу все события
 // render(eventsDayListElement, new DayEvent(events).getElement(), RenderPosition.BEFOREEND);
 
-// events.forEach((event) => render(eventsDayListElement, new DayEvent(event).getElement(), RenderPosition.BEFOREEND));
-events.forEach((event) => renderEvent(event));
-render(infoElement, new Info(events).getElement(), RenderPosition.AFTERBEGIN);
-render(infoElement, new Total(events).getElement(), RenderPosition.BEFOREEND);
+
+if (events.length > 0) {
+  // выводим события
+  events.forEach((event) => renderEvent(event));
+  render(infoElement, new Info(events).getElement(), RenderPosition.AFTERBEGIN);
+  render(infoElement, new Total(events).getElement(), RenderPosition.BEFOREEND);
+} else {
+  // выводим пустой список
+  render(eventsElement, new NoPoints().getElement(), RenderPosition.BEFOREEND);
+}
+
