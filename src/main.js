@@ -62,7 +62,7 @@ const renderEvent = (event) => {
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
-  const eventEditComponent = new NewEvent(createEvent());
+  const eventEditComponent = new NewEvent(event);
   const editForm = eventEditComponent.getElement().querySelector(`form`);
   editForm.addEventListener(`submit`, replaceEditToEvent);
 
