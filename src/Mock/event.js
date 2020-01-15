@@ -54,7 +54,7 @@ const createEvent = (day) => {
 
   const now = new Date();
   const randomHours = getRandomNumber(1, 13);
-  const date = day || now;
+  // const date = day || now;
   const type = getRandomElement([...EventIcon.keys()]);
   const sentences = eventText.split(`. `);
   const quantity = getRandomNumber(MIN_INDEX, 3);
@@ -64,7 +64,7 @@ const createEvent = (day) => {
     icon: `img/icons/${EventIcon.get(type)}`,
     city: getRandomElement([...eventCities]),
     description: new Array(quantity).fill(``).map(() => getRandomElement(sentences)).join(),
-    date,
+    // date,
     startTime: generateDate(now),
     endTime: generateDate(now, randomHours),
     duration: `${randomHours}H`,

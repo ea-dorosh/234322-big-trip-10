@@ -110,6 +110,7 @@
 //     this._element = null;
 //   }
 // }
+
 import {castDate, formatDateToICO, formatDateAttribute, createElement} from "../util";
 import {Month} from "../const";
 
@@ -126,7 +127,7 @@ const generateOffersMarkup = (offers) => {
   });
 };
 
-const eventTemplate = (icon, city, type, duration, startTime, endTime, price, offers) => {
+const eventTemplate = ({icon, city, type, duration, startTime, endTime, price, offers}) => {
   const offersMarkup = generateOffersMarkup(offers);
   return (
     `
@@ -168,7 +169,7 @@ export const createSiteDayTemplate = ({icon, city, type, duration, startTime, en
   return (
     `<li class="trip-days__item  day">
               <div class="day__info">
-                <span class="day__counter">1</span>
+                <span class="day__counter">i++</span>
                 <time class="day__date" datetime="${formatDateAttribute(date)}">${Month.get(date.getMonth())} ${date.getDate()}</time>
               </div>
               <ul class="trip-events__list">
@@ -177,6 +178,9 @@ export const createSiteDayTemplate = ({icon, city, type, duration, startTime, en
             </li>`
   );
 };
+
+
+// 1) Написать функцию, которая примет в себя массив с евентами -> Будет ретернить шаблон,
 
 export default class DayEvent {
   constructor(event) {

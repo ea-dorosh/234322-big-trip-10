@@ -2,7 +2,7 @@ import Filters from "./components/filter";
 import Menu from "./components/menu";
 import Info from "./components/info";
 import Total from "./components/total";
-import DayList from "./components/day-list";
+import DaysList from "./components/days-list";
 import NewEvent from "./components/new-event";
 import DayEvent from "./components/event";
 import NoPoints from "./components/no-points";
@@ -32,18 +32,18 @@ render(menuElement, new Menu(menu).getElement(), RenderPosition.AFTEREND);
 const mainElement = document.querySelector(`.page-main`);
 const eventsElement = mainElement.querySelector(`.trip-events`);
 
-render(eventsElement, new DayList().getElement(), RenderPosition.BEFOREEND);
+render(eventsElement, new DaysList().getElement(), RenderPosition.BEFOREEND);
 
-const eventsDayListElement = mainElement.querySelector(`.trip-days`);
+const eventsDaysListElement = mainElement.querySelector(`.trip-days`);
 
 const renderEvent = (event) => {
 
   const replaceEventToEdit = () => {
-    eventsDayListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+    eventsDaysListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
   };
 
   const replaceEditToEvent = () => {
-    eventsDayListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+    eventsDaysListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
   };
 
   const onEscKeyDown = (evt) => {
@@ -66,7 +66,7 @@ const renderEvent = (event) => {
   const editForm = eventEditComponent.getElement().querySelector(`form`);
   editForm.addEventListener(`submit`, replaceEditToEvent);
 
-  render(eventsDayListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+  render(eventsDaysListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
 const events = createEvents(EVENT_QUANTITY);
