@@ -2,12 +2,13 @@ import Filters from "./components/filter";
 import Menu from "./components/menu";
 import Info from "./components/info";
 import Total from "./components/total";
-import DayList from "./components/day-list";
+import TripDays from "./components/day-list";
 import NewEvent from "./components/new-event";
 import DayEvent from "./components/event";
 import NoPoints from "./components/no-points";
-
-import {createEvent, createEvents} from "./Mock/event";
+// разделить days еа day
+import Day from "./components/day";
+import {createDays} from "./Mock/days";
 import {generateFilters} from "./Mock/filter";
 import {generateMenu} from './mock/menu';
 
@@ -15,6 +16,8 @@ import {FILTERS} from "./const";
 import {render, RenderPosition} from "./util";
 
 const EVENT_QUANTITY = 3;
+
+const DAYS_QUANTITY = 3;
 
 const headerElement = document.querySelector(`.page-header`);
 const menuElement = headerElement.querySelector(`.trip-main__menu-title`);
@@ -32,9 +35,9 @@ render(menuElement, new Menu(menu).getElement(), RenderPosition.AFTEREND);
 const mainElement = document.querySelector(`.page-main`);
 const eventsElement = mainElement.querySelector(`.trip-events`);
 
-render(eventsElement, new DayList().getElement(), RenderPosition.BEFOREEND);
+render(eventsElement, new TripDays().getElement(), RenderPosition.BEFOREEND);
 
-const eventsDayListElement = mainElement.querySelector(`.trip-days`);
+const tripDaysElement = mainElement.querySelector(`.trip-days`);
 
 const renderEvent = (event) => {
 
@@ -66,15 +69,61 @@ const renderEvent = (event) => {
   const editForm = eventEditComponent.getElement().querySelector(`form`);
   editForm.addEventListener(`submit`, replaceEditToEvent);
 
-  render(eventsDayListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+  render(tripDaysElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-const events = createEvents(EVENT_QUANTITY);
+const renderDay = (day) => {
+
+  const replaceEventToEdit = (editComponent, eventElement) => {
+    tripDaysElement.replaceChild(editComponent.getElement(), eventElement);
+    console.log(1);
+  };
+
+  // const replaceEditToEvent = (editComponent) => {
+  //   tripDaysElement.replaceChild(dayComponent.getElement(), editComponent.getElement());
+  // };
+
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToEvent();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const dayComponent = new Day(day);
+
+  const eventsElements = dayComponent.getElement().querySelector(`.day > .trip-events__list`).querySelectorAll(`.trip-events__item`);
+  console.log(eventsElements);
+
+  for (let i = 0; i < eventsElements.length; i++) {
+    const editButton = eventsElements[i].querySelector(`.event__rollup-btn`);
+    const editComponent = new NewEvent(dayComponent._day.events[i]);
+
+    const editForm = editComponent.getElement().querySelector(`form`);
+    console.log(editForm);
+    // editForm.addEventListener(`submit`, replaceEditToEvent.bind(null, editComponent));
+
+    editButton.addEventListener(`click`, () => {
+      replaceEventToEdit(editComponent, eventsElements[i]);
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+
+  }
+
+  render(tripDaysElement, dayComponent.getElement(), RenderPosition.BEFOREEND);
+
+
+
+};
+
+// const events = createEvents(EVENT_QUANTITY);
 
 // старая функция которая рендерит сразу все события
 // render(eventsDayListElement, new DayEvent(events).getElement(), RenderPosition.BEFOREEND);
 
-
+/*
 if (events.length > 0) {
   // выводим события
   events.forEach((event) => renderEvent(event));
@@ -85,3 +134,15 @@ if (events.length > 0) {
   render(eventsElement, new NoPoints().getElement(), RenderPosition.BEFOREEND);
 }
 
+*/
+const days = createDays(DAYS_QUANTITY);
+
+if (days.length > 0) {
+  // выводим события
+  days.forEach((day) => renderDay(day));
+  render(infoElement, new Info(days).getElement(), RenderPosition.AFTERBEGIN);
+  render(infoElement, new Total(days).getElement(), RenderPosition.BEFOREEND);
+} else {
+  // выводим пустой список
+  render(eventsElement, new NoPoints().getElement(), RenderPosition.BEFOREEND);
+}

@@ -6,7 +6,7 @@ const createSiteDayListTemplate = () => {
   );
 };
 
-export default class DayList {
+export default class TripDays {
   constructor() {
     this._element = null;
   }
