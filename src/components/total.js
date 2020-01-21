@@ -1,7 +1,11 @@
 import {createElement} from "../util";
 
-const createSiteTotalTemplate = (events) => {
-  let totalPrice = events.reduce((price, value) => price + value.price, 0);
+const createSiteTotalTemplate = (days) => {
+  let totalPrice = 0;
+  days.forEach((day) => {
+    let dayTotalPrice = day.events.reduce((price, value) => price + value.price, 0);
+    totalPrice += dayTotalPrice;
+  });
 
   return (
     `<p class="trip-info__cost">
@@ -11,8 +15,8 @@ const createSiteTotalTemplate = (events) => {
 };
 
 export default class Total {
-  constructor(events) {
-    this._events = events;
+  constructor(days) {
+    this._events = days;
     this._element = null;
   }
 
