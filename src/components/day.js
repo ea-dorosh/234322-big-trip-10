@@ -15,7 +15,6 @@ const generateOffersMarkup = (offers) => {
 };
 
 const eventTemplate = ({icon, city, type, duration, startTime, endTime, price, offers}) => {
-  console.log(icon, city, type, duration, startTime, endTime, price, offers)
 
   const offersMarkup = generateOffersMarkup(offers);
   return (
