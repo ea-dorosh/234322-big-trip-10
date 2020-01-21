@@ -1,4 +1,5 @@
-import {castDate, formatDateToICO, formatDateAttribute, createElement} from "../util";
+import AbstractComponent from "./abstarct-component";
+import {castDate, formatDateToICO, formatDateAttribute} from "../util";
 import {Month} from "../const";
 
 const generateOffersMarkup = (offers) => {
@@ -67,25 +68,14 @@ export const createSiteDayTemplate = ({date, dayNumber, events}) => {
   );
 };
 
-export default class Day {
+export default class Day extends AbstractComponent {
   constructor(day) {
+    super();
+
     this._day = day;
-    this._element = null;
   }
 
   getTemplate() {
     return createSiteDayTemplate(this._day);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

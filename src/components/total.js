@@ -1,4 +1,4 @@
-import {createElement} from "../util";
+import AbstractComponent from "./abstarct-component";
 
 const createSiteTotalTemplate = (days) => {
   let totalPrice = 0;
@@ -14,25 +14,14 @@ const createSiteTotalTemplate = (days) => {
   );
 };
 
-export default class Total {
+export default class Total extends AbstractComponent {
   constructor(days) {
-    this._events = days;
-    this._element = null;
+    super();
+
+    this._days = days;
   }
 
   getTemplate() {
-    return createSiteTotalTemplate(this._events);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return createSiteTotalTemplate(this._days);
   }
 }

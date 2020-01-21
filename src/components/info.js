@@ -1,5 +1,5 @@
+import AbstractComponent from "./abstarct-component";
 import {Month} from "../const";
-import {createElement} from "../util";
 
 const createSiteInfoTemplate = (days) => {
   const firstCity = days[0].events[0].city;
@@ -17,25 +17,14 @@ const createSiteInfoTemplate = (days) => {
   );
 };
 
-export default class Info {
+export default class Info extends AbstractComponent {
   constructor(event) {
+    super();
+
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createSiteInfoTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
