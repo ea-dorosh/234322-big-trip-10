@@ -1,12 +1,12 @@
 import {Month} from "../const";
 import {createElement} from "../util";
 
-const createSiteInfoTemplate = (event) => {
-  const firstCity = event[0].city;
-  const lastCity = event[event.length - 1].city;
-  const startMonth = Month.get(event[0].date.getMonth());
-  const firstDay = event[0].date.getDate();
-  const lastDay = event[event.length - 1].date.getDate();
+const createSiteInfoTemplate = (days) => {
+  const firstCity = days[0].events[0].city;
+  const lastCity = days[days.length - 1].events.slice(-1)[0].city;
+  const startMonth = Month.get(days[0].date.getMonth());
+  const firstDay = days[0].date.getDate();
+  const lastDay = days[days.length - 1].date.getDate();
 
   return (
     `<div class="trip-info__main">
