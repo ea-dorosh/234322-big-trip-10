@@ -12,7 +12,7 @@ import {generateFilters} from "./Mock/filter";
 import {generateMenu} from './mock/menu';
 
 import {FILTERS} from "./const";
-import {render, RenderPosition} from "./util";
+import {render, RenderPosition} from "./utils/render";
 
 const DAYS_QUANTITY = 3;
 
