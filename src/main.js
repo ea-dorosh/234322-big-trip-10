@@ -12,7 +12,7 @@ import {generateFilters} from "./Mock/filter";
 import {generateMenu} from './mock/menu';
 
 import {FILTERS} from "./const";
-import {render, RenderPosition} from "./utils/render";
+import {render, replace, RenderPosition} from "./utils/render";
 
 const DAYS_QUANTITY = 3;
 
@@ -38,28 +38,33 @@ const tripDaysElement = mainElement.querySelector(`.trip-days`);
 
 const renderDay = (day) => {
 
-  const replaceEventToEdit = (eventsList, editComponent, eventElement) => {
-    eventsList.replaceChild(editComponent.getElement(), eventElement);
-  };
-
-  const replaceEditToEvent = (eventsList, eventElement, editComponent) => {
-    eventsList.replaceChild(eventElement, editComponent.getElement());
-  };
-
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      replaceEditToEvent();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
   const dayComponent = new Day(day);
 
-  const eventsElements = dayComponent.getElement().querySelector(`.day > .trip-events__list`).querySelectorAll(`.trip-events__item`);
+  const eventsElements = dayComponent.getElement().querySelectorAll(`.trip-events__item`);
 
   for (let i = 0; i < eventsElements.length; i++) {
+
+
+    // //////
+
+    const onEscKeyDown = (evt) => {
+      const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+      if (isEscKey) {
+        replaceEditToEvent();
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
+
+    const replaceEventToEdit = () => {
+      replace(editComponent.getElement(), eventsElements[i]);
+    };
+
+    const replaceEditToEvent = () => {
+      replace(eventsElements[i], editComponent.getElement());
+    };
+
+    // //////
 
     const editButton = eventsElements[i].querySelector(`.event__rollup-btn`);
     const editComponent = new NewEvent(dayComponent._day.events[i]);
@@ -68,14 +73,14 @@ const renderDay = (day) => {
 
     editForm.addEventListener(`submit`, (evt) => {
       evt.preventDefault();
-      replaceEditToEvent(editForm.parentElement.parentElement, eventsElements[i], editComponent);
+      replaceEditToEvent();
     });
 
     editButton.addEventListener(`click`, () => {
-      replaceEventToEdit(eventsElements[i].parentElement, editComponent, eventsElements[i]);
+      replaceEventToEdit();
+
       document.addEventListener(`keydown`, onEscKeyDown);
     });
-
   }
 
   render(tripDaysElement, dayComponent.getElement(), RenderPosition.BEFOREEND);

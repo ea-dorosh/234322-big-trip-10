@@ -65,7 +65,7 @@ const createDay = (dayNumber) => {
   const eventsAmount = Math.random() * 3;
   const events = createEvents(eventsAmount);
 
-  return { date, dayNumber, events };
+  return {date, dayNumber, events};
 };
 //
 const createEvents = (amount) => {

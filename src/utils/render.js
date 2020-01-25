@@ -24,3 +24,15 @@ export const render = (container, element, place) => {
       break;
   }
 };
+
+export const replace = (newComponent, oldComponent) => {
+  const parentElement = oldComponent.parentElement;
+  const newElement = newComponent;
+  const oldElement = oldComponent;
+
+  const isExistElements = !!(parentElement && newElement && oldElement);
+
+  if (isExistElements && parentElement.contains(oldElement)) {
+    parentElement.replaceChild(newElement, oldElement);
+  }
+};
