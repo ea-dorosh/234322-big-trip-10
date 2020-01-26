@@ -1,7 +1,11 @@
-import {createElement} from "../util";
+import AbstractComponent from "./abstarct-component";
 
-const createSiteTotalTemplate = (events) => {
-  let totalPrice = events.reduce((price, value) => price + value.price, 0);
+const createSiteTotalTemplate = (days) => {
+  let totalPrice = 0;
+  days.forEach((day) => {
+    let dayTotalPrice = day.events.reduce((price, value) => price + value.price, 0);
+    totalPrice += dayTotalPrice;
+  });
 
   return (
     `<p class="trip-info__cost">
@@ -10,25 +14,14 @@ const createSiteTotalTemplate = (events) => {
   );
 };
 
-export default class Total {
-  constructor(events) {
-    this._events = events;
-    this._element = null;
+export default class Total extends AbstractComponent {
+  constructor(days) {
+    super();
+
+    this._days = days;
   }
 
   getTemplate() {
-    return createSiteTotalTemplate(this._events);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return createSiteTotalTemplate(this._days);
   }
 }

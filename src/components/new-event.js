@@ -1,4 +1,5 @@
-import {formatEditDate, createElement} from "../util";
+import AbstractComponent from "./abstarct-component";
+import {formatEditDate} from "../util";
 
 const createSiteNewEventTemplate = ({icon, city, type, description, startTime, endTime, price}) => {
   return (
@@ -180,25 +181,18 @@ const createSiteNewEventTemplate = ({icon, city, type, description, startTime, e
   );
 };
 
-export default class NewEvent {
+export default class NewEvent extends AbstractComponent {
   constructor(event) {
+    super();
+
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createSiteNewEventTemplate(this._event);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  onSubmitButtonClick(handler) {
+    this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
   }
 }

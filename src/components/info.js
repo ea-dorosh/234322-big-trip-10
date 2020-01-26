@@ -1,12 +1,12 @@
+import AbstractComponent from "./abstarct-component";
 import {Month} from "../const";
-import {createElement} from "../util";
 
-const createSiteInfoTemplate = (event) => {
-  const firstCity = event[0].city;
-  const lastCity = event[event.length - 1].city;
-  const startMonth = Month.get(event[0].date.getMonth());
-  const firstDay = event[0].date.getDate();
-  const lastDay = event[event.length - 1].date.getDate();
+const createSiteInfoTemplate = (days) => {
+  const firstCity = days[0].events[0].city;
+  const lastCity = days[days.length - 1].events.slice(-1)[0].city;
+  const startMonth = Month.get(days[0].date.getMonth());
+  const firstDay = days[0].date.getDate();
+  const lastDay = days[days.length - 1].date.getDate();
 
   return (
     `<div class="trip-info__main">
@@ -17,25 +17,14 @@ const createSiteInfoTemplate = (event) => {
   );
 };
 
-export default class Info {
+export default class Info extends AbstractComponent {
   constructor(event) {
+    super();
+
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createSiteInfoTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

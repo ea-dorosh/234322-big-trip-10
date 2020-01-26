@@ -50,11 +50,39 @@ const generateOffers = () => {
   return cardOffers;
 };
 
-const createEvent = (day) => {
+const createDays = (daysAmount) => {
+  const days = [];
+  for (let dayNumber = 0; dayNumber < daysAmount; dayNumber++) {
+    const day = createDay(dayNumber);
 
+    days.push(day);
+  }
+  return days;
+};
+//
+const createDay = (dayNumber) => {
+  const date = new Date(2011, 0, dayNumber);
+  const eventsAmount = Math.random() * 3;
+  const events = createEvents(eventsAmount);
+
+  return {date, dayNumber, events};
+};
+//
+const createEvents = (amount) => {
+  const events = [];
+
+  for (let i = 0; i < amount; i++) {
+    const event = createEvent(i);
+
+    events.push(event);
+  }
+  return events;
+
+};
+//
+const createEvent = () => {
   const now = new Date();
   const randomHours = getRandomNumber(1, 13);
-  // const date = day || now;
   const type = getRandomElement([...EventIcon.keys()]);
   const sentences = eventText.split(`. `);
   const quantity = getRandomNumber(MIN_INDEX, 3);
@@ -64,7 +92,6 @@ const createEvent = (day) => {
     icon: `img/icons/${EventIcon.get(type)}`,
     city: getRandomElement([...eventCities]),
     description: new Array(quantity).fill(``).map(() => getRandomElement(sentences)).join(),
-    // date,
     startTime: generateDate(now),
     endTime: generateDate(now, randomHours),
     duration: `${randomHours}H`,
@@ -73,17 +100,4 @@ const createEvent = (day) => {
   };
 };
 
-const createEvents = (amount) => {
-  let dayOfEvent = new Array(amount).fill(``).map(() => new Date());
-  if (amount > 2) {
-    dayOfEvent[2].setDate(dayOfEvent[2].getDate() + 3);
-  }
-  return new Array(amount)
-    .fill(``)
-    .map((element, index) => {
-      const event = createEvent(dayOfEvent[index]);
-      return Object.assign(event, {dayOfDate: event.date.getDate()});
-    });
-};
-
-export {createEvent, createEvents};
+export {createDays};
