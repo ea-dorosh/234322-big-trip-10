@@ -78,4 +78,12 @@ export default class Day extends AbstractComponent {
   getTemplate() {
     return createSiteDayTemplate(this._day);
   }
+
+  setOnEditButtonClick(handler) {
+    const events = this.getElement().querySelectorAll(`.trip-events__item`);
+    events.forEach((event) => {
+      event.querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
+    });
+    // .addEventListener(`click`, handler);
+  }
 }

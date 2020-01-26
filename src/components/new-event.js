@@ -191,4 +191,8 @@ export default class NewEvent extends AbstractComponent {
   getTemplate() {
     return createSiteNewEventTemplate(this._event);
   }
+
+  onSubmitButtonClick(handler) {
+    this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
+  }
 }

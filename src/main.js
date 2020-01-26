@@ -1,25 +1,21 @@
+import TripController from "./controllers/trip";
+
 import Filters from "./components/filter";
 import Menu from "./components/menu";
-import Info from "./components/info";
-import Total from "./components/total";
-import TripDays from "./components/days-list";
-import NewEvent from "./components/new-event";
-import NoPoints from "./components/no-points";
-// разделить days на day
-import Day from "./components/day";
-import {createDays} from "./Mock/days";
 import {generateFilters} from "./Mock/filter";
 import {generateMenu} from './mock/menu';
 
 import {FILTERS} from "./const";
-import {render, replace, RenderPosition} from "./utils/render";
-
-const DAYS_QUANTITY = 3;
+import {render, RenderPosition} from "./utils/render";
+import {createDays} from "./mock/days";
 
 const headerElement = document.querySelector(`.page-header`);
 const menuElement = headerElement.querySelector(`.trip-main__menu-title`);
 const filterElement = headerElement.querySelector(`.trip-main__filter-title`);
-const infoElement = headerElement.querySelector(`.trip-main__trip-info`);
+
+
+const mainElement = document.querySelector(`.page-main`);
+const daysElement = mainElement.querySelector(`.trip-events`);
 
 const filters = generateFilters(FILTERS);
 
@@ -28,75 +24,8 @@ render(filterElement, new Filters(filters).getElement(), RenderPosition.AFTEREND
 const menu = generateMenu();
 render(menuElement, new Menu(menu).getElement(), RenderPosition.AFTEREND);
 
-
-const mainElement = document.querySelector(`.page-main`);
-const eventsElement = mainElement.querySelector(`.trip-events`);
-
-render(eventsElement, new TripDays().getElement(), RenderPosition.BEFOREEND);
-
-const tripDaysElement = mainElement.querySelector(`.trip-days`);
-
-const renderDay = (day) => {
-
-  const dayComponent = new Day(day);
-
-  const eventsElements = dayComponent.getElement().querySelectorAll(`.trip-events__item`);
-
-  for (let i = 0; i < eventsElements.length; i++) {
-
-
-    // //////
-
-    const onEscKeyDown = (evt) => {
-      const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-      if (isEscKey) {
-        replaceEditToEvent();
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    const replaceEventToEdit = () => {
-      replace(editComponent.getElement(), eventsElements[i]);
-    };
-
-    const replaceEditToEvent = () => {
-      replace(eventsElements[i], editComponent.getElement());
-    };
-
-    // //////
-
-    const editButton = eventsElements[i].querySelector(`.event__rollup-btn`);
-    const editComponent = new NewEvent(dayComponent._day.events[i]);
-
-    const editForm = editComponent.getElement().querySelector(`form`);
-
-    editForm.addEventListener(`submit`, (evt) => {
-      evt.preventDefault();
-      replaceEditToEvent();
-    });
-
-    editButton.addEventListener(`click`, () => {
-      replaceEventToEdit();
-
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-  }
-
-  render(tripDaysElement, dayComponent.getElement(), RenderPosition.BEFOREEND);
-
-};
-
+const DAYS_QUANTITY = 3;
 const days = createDays(DAYS_QUANTITY);
 
-if (days.length > 0) {
-  // выводим дни с событиями
-  days.forEach((day) => renderDay(day));
-  // выводим маршрут
-  render(infoElement, new Info(days).getElement(), RenderPosition.AFTERBEGIN);
-  // выводим итоговую сумму
-  render(infoElement, new Total(days).getElement(), RenderPosition.BEFOREEND);
-} else {
-  // выводим пустой список
-  render(eventsElement, new NoPoints().getElement(), RenderPosition.BEFOREEND);
-}
+const tripController = new TripController(daysElement);
+tripController.render(days);
